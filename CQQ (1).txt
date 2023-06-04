@@ -1,0 +1,238 @@
+#include<iostream>
+#include<iomanip>
+#include<conio.h>
+#include<stdlib.h>
+#include<fstream>
+using namespace std;
+
+struct node{
+	string data;
+	node* next;
+	node* prev;
+};
+
+int n=1;
+string data;
+string u_data;
+node* head=NULL;
+node* tail=NULL;
+node* carry=NULL;
+
+void insert(string data){
+	if(head==NULL){
+		node* temp=new node();
+		temp->data=data;
+		temp->prev=NULL;
+		temp->next=NULL;
+		head=temp;
+		tail=temp;
+	}
+	else{
+		node* temp=new node();
+	    temp->data=data;
+	    tail->next=temp;
+	    temp->prev=tail;
+	    temp->next=NULL;
+	    tail=temp;
+	}
+}
+
+void display(node** head){
+	system("cls");
+	node* temp=(*head);
+	if(temp==NULL){
+		cout<<"No data is there for display.";
+	}
+	while(temp!=NULL){
+		cout<<temp->data<<endl;
+		temp=temp->next;
+	}
+}
+
+void update(string data, string u_data){
+	if(head==NULL){
+		cout<<"Please Enter Data First!"<<endl;
+	}
+	else{
+		node* temp=(head);
+		while(temp!=NULL){
+			if(temp->data==data){
+				temp->data=u_data;
+				return;
+			}
+			temp=temp->next;
+		}
+	}
+}
+
+void append(string data){
+	if(head==NULL){
+		insert(data);
+	}
+	else{
+		node* temp=new node();
+		temp->data=data;
+		tail->next=temp;
+		temp->prev=tail;
+		tail=temp;
+	}
+	
+}
+
+void search(string data){
+	node* temp=head;
+	if(head==NULL){
+		cout<<"Data not found"<<endl;
+	}
+	else{
+		while(temp!=NULL){
+			if(temp->data==data){
+				cout<<"Data is there!"<<endl;
+				return;
+			}
+			temp=temp->next;
+		}
+		cout<<"Data Not Found";
+	}
+}
+
+void Delete(string data){
+	node* temp=head;
+	if(head==NULL){
+		cout<<"Please enter data first";
+	}
+	else{
+		while(temp!=NULL){
+			if(temp->data==data){
+				temp->prev->next=temp->next;
+				return;	
+			}
+			temp=temp->next;
+		}
+	}
+}
+
+void undo(){
+	if(head==NULL){
+		cout<<"no data is there";
+	}
+	else{
+		carry=tail;
+		tail=tail->prev;
+		tail->next=NULL;
+	}
+}
+
+void redo(){
+	if(head==NULL){
+		cout<<"No data is there";
+	}
+	else{
+		tail->next=carry;
+		carry->prev=tail;
+		carry->next=NULL;
+		tail=carry;
+	}
+}
+
+/*void save(){
+	
+}*/
+
+void intro(){
+	system("cls");
+	int choice;
+	
+	cout<<setw(70)<<"Welcome to Editor!"<<endl<<endl<<endl;
+	cout<<"1 : Insert"<<endl<<endl;
+	cout<<"2 : Update"<<endl<<endl;
+	cout<<"3 : Append"<<endl<<endl;
+	cout<<"4 : Search"<<endl<<endl;
+	cout<<"5 : Delete"<<endl<<endl;
+	cout<<"6 : Display"<<endl<<endl;
+	cout<<"7 : Undo"<<endl<<endl;
+	cout<<"8 : Redo"<<endl<<endl;
+	cout<<"9 : Save"<<endl<<endl;
+	cout<<"10 : Exit"<<endl<<endl;
+	
+	cin>>choice;
+	
+	switch(choice){
+		case 1:
+			system("cls");
+			cout<<"Enter the data"<<endl;
+			cin>>data;
+			insert(data);
+			break;
+		
+		case 2:
+			system("cls");
+			cout<<"Enter the data you want to update along with the new data"<<endl;
+			cin>>data;
+			cin>>u_data;
+			update(data, u_data);
+			break;
+		
+		case 3:
+			system("cls");
+			cout<<"Enter the data"<<endl;
+			cin>>data;
+			append(data);
+			break;
+			
+		case 4:
+			system("cls");
+			cout<<"Enter the data you want to search"<<endl;
+			cin>>data;
+			search(data);
+			break;
+			
+		case 5:
+			system("cls");
+			cout<<"Enter the data you want to delete"<<endl;
+			cin>>data;
+			Delete(data);
+			break;
+			
+		case 6:
+			system("cls");
+			display(&head);
+			break;
+			
+		case 7:
+			system("cls");
+			undo();
+			break;
+			
+		case 8:
+			system("cls");
+			redo();
+			break;
+			
+		case 9:
+			system("cls");
+			//save();
+			break;
+			
+		case 10:
+			exit(0);
+			break;
+			
+		default:
+			system("cls");
+		    cout<<"Please Enter the Correct Choice"<<endl;
+	}
+	
+	getch();
+	
+}
+
+int main(){
+	do{
+		system("cls");
+		intro();
+	}while(n!=0);
+	
+	return 0;
+	
+}
